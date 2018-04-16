@@ -5,6 +5,12 @@ output: html_notebook
 
 # Análise das diferenças de idade em hollywood
 
+
+```{r}
+deps = c("tidyverse", "stringr", "here", "skimr")
+install.packages(deps)
+```
+
 ```{r setup, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(here)
@@ -114,4 +120,92 @@ diferencas %>%
     ggplot(aes(x = actor_1_age, y = age_difference)) + 
     geom_point(alpha = .5, size = .5)
 ```
+```{r}
+diferencas %>% 
+    ggplot(aes(x = release_year)) + 
+    geom_bar()
+```
+```{r}
+diferencas %>% 
+    mutate(age_difference = abs(age_difference)) %>%
+    ggplot(aes(x = release_year, y = age_difference)) + 
+    geom_point()
+```
+```{r}
+diferencas %>% 
+    mutate(age_difference = abs(age_difference)) %>%
+    filter(release_year >= 2010) %>%
+    ggplot(aes(x = release_year, y = age_difference)) + 
+    geom_point()
+```
 
+```{r}
+diferencas %>% 
+    mutate(age_difference = abs(age_difference)) %>%
+    filter(release_year >= 2010) %>%
+    ggplot(aes(x = release_year, y = age_difference)) + 
+    geom_point()
+```
+
+```{r}
+diferencas %>% 
+    mutate(age_difference = abs(age_difference)) %>%
+    filter(release_year >= 2010) %>%
+    ggplot(aes(x = release_year, y = age_difference)) + 
+    stat_summary(
+    fun.ymin = min,
+    fun.ymax = max,
+    fun.y = mean
+  )
+```
+
+```{r}
+diferencas %>% 
+    filter(!same_sex, age_difference > 0) %>%
+    count()
+  
+```
+
+```{r}
+diferencas %>% 
+    filter(!same_sex, age_difference < 0) %>%
+    count()
+  
+```
+
+```{r}
+ 752 / (752+145)
+  
+```
+```{r}
+ diferencas %>%
+    filter(!same_sex) %>%
+    ggplot(aes(x =  '', y  = age_difference)) +
+    geom_boxplot()
+  
+```
+
+```{r}
+diferencas %>% 
+    filter(release_year >= 2010) %>%
+    ggplot(aes(x = as.factor(release_year), y = age_difference)) + 
+    geom_boxplot()
+
+```
+
+```{r}
+diferencas %>% 
+    mutate(release_year = cut(release_year, 8)) %>% 
+    ggplot(aes(x = release_year, age_difference)) + 
+    geom_boxplot()
+```
+```{r}
+diferencas %>% 
+    group_by(director) %>% 
+    count() 
+
+```
+```{r}
+diferencas %>% 
+    filter(same_sex)
+```
